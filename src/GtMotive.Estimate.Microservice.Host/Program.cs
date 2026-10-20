@@ -7,6 +7,7 @@ using Azure.Security.KeyVault.Secrets;
 using GtMotive.Estimate.Microservice.Api;
 using GtMotive.Estimate.Microservice.Host.Configuration;
 using GtMotive.Estimate.Microservice.Host.DependencyInjection;
+using GtMotive.Estimate.Microservice.Host.Infrastructure;
 using GtMotive.Estimate.Microservice.Infrastructure;
 using GtMotive.Estimate.Microservice.Infrastructure.MongoDb;
 using GtMotive.Estimate.Microservice.Infrastructure.MongoDb.Settings;
@@ -140,5 +141,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 await app.Services.GetRequiredService<MongoService>().EnsureIndexes();
+await VehicleDataSeeder.Seed(app.Services);
 
 await app.RunAsync();

@@ -21,16 +21,17 @@ namespace GtMotive.Estimate.Microservice.Api.Controllers
         private readonly IAppLogger<VehiclesController> _appLogger = appLogger;
 
         /// <summary>
-        /// Lists vehicles that are currently available for rent.
+        /// Lists vehicles, optionally filtered by rental status.
         /// </summary>
-        /// <returns>The available vehicles.</returns>
+        /// <param name="isRented">True for rented vehicles, false for available vehicles, or null for all vehicles.</param>
+        /// <returns>The matching vehicles.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IReadOnlyCollection<AvailableVehicleResponse>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] bool? isRented = null)
         {
-            _appLogger.LogDebug("Entering Get available vehicles.");
+            _appLogger.LogDebug("Entering Get vehicles. IsRented: {IsRented}", isRented);
 
-            var presenter = await _mediator.Send(new GetAvailableVehiclesRequest());
+            var presenter = await _mediator.Send(new GetAvailableVehiclesRequest(isRented));
 
             return presenter.ActionResult;
         }

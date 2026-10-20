@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using GtMotive.Estimate.Microservice.ApplicationCore.UseCases.GetAvailableVehicles;
@@ -20,7 +21,9 @@ namespace GtMotive.Estimate.Microservice.Api.UseCases.GetAvailableVehicles
         /// <inheritdoc />
         public async Task<IWebApiPresenter> Handle(GetAvailableVehiclesRequest request, CancellationToken cancellationToken)
         {
-            var vehicles = await _useCase.Execute();
+            ArgumentNullException.ThrowIfNull(request);
+
+            var vehicles = await _useCase.Execute(request.IsRented);
             _presenter.Handle(vehicles);
             return _presenter;
         }

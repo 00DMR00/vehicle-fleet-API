@@ -25,8 +25,8 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure.InMemory
             return Task.FromResult(vehicle);
         }
 
-        public Task<IReadOnlyCollection<Vehicle>> GetAvailable() =>
-            Task.FromResult<IReadOnlyCollection<Vehicle>>([.. _vehicles.Values.Where(v => !v.IsRented)]);
+        public Task<IReadOnlyCollection<Vehicle>> GetByRentalStatus(bool? isRented) =>
+            Task.FromResult<IReadOnlyCollection<Vehicle>>([.. _vehicles.Values.Where(v => !isRented.HasValue || v.IsRented == isRented.Value)]);
 
         public Task Update(Vehicle vehicle)
         {

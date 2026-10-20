@@ -34,9 +34,12 @@ namespace GtMotive.Estimate.Microservice.Infrastructure.MongoDb.Repositories
             return document?.ToDomain();
         }
 
-        public async Task<IReadOnlyCollection<Vehicle>> GetAvailable()
+        public async Task<IReadOnlyCollection<Vehicle>> GetByRentalStatus(bool? isRented)
         {
-            var documents = await _vehicles.Find(v => !v.IsRented).ToListAsync();
+            var filter = isRented.HasValue
+                ? Builders<VehicleDocument>.Filter.Eq(v => v.IsRented, isRented.Value)
+                : Builders<VehicleDocument>.Filter.Empty;
+            var documents = await _vehicles.Find(filter).ToListAsync();
 
             return documents.ConvertAll(v => v.ToDomain());
         }

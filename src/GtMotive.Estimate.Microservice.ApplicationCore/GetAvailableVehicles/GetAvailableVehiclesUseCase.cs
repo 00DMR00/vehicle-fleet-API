@@ -7,7 +7,7 @@ using GtMotive.Estimate.Microservice.Domain.Vehicles;
 namespace GtMotive.Estimate.Microservice.ApplicationCore.UseCases.GetAvailableVehicles
 {
     /// <summary>
-    /// Retrieves vehicles that are not currently rented.
+    /// Retrieves vehicles matching the requested rental status.
     /// </summary>
     /// <param name="vehicleRepository">Vehicle repository.</param>
     public sealed class GetAvailableVehiclesUseCase(IVehicleRepository vehicleRepository) : IGetAvailableVehiclesUseCase
@@ -15,9 +15,9 @@ namespace GtMotive.Estimate.Microservice.ApplicationCore.UseCases.GetAvailableVe
         private readonly IVehicleRepository _vehicleRepository = vehicleRepository;
 
         /// <inheritdoc />
-        public async Task<IReadOnlyCollection<AvailableVehicleOutput>> Execute()
+        public async Task<IReadOnlyCollection<AvailableVehicleOutput>> Execute(bool? isRented = null)
         {
-            var vehicles = await _vehicleRepository.GetAvailable();
+            var vehicles = await _vehicleRepository.GetByRentalStatus(isRented);
             return Array.AsReadOnly(vehicles.Select(vehicle => new AvailableVehicleOutput(vehicle)).ToArray());
         }
     }

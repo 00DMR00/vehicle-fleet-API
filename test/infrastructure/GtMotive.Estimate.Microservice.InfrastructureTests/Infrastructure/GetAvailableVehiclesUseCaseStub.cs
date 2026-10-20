@@ -6,7 +6,7 @@ namespace GtMotive.Estimate.Microservice.InfrastructureTests.Infrastructure
 {
     internal sealed class GetAvailableVehiclesUseCaseStub : IGetAvailableVehiclesUseCase
     {
-        public Task<IReadOnlyCollection<AvailableVehicleOutput>> Execute() =>
+        public Task<IReadOnlyCollection<AvailableVehicleOutput>> Execute(bool? isRented = null) =>
             Task.FromResult<IReadOnlyCollection<AvailableVehicleOutput>>([]);
     }
 }

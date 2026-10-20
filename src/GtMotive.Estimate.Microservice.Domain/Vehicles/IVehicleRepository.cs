@@ -24,10 +24,11 @@ namespace GtMotive.Estimate.Microservice.Domain.Vehicles
         Task<Vehicle> GetById(Guid id);
 
         /// <summary>
-        /// Gets the vehicles that are not currently rented.
+        /// Gets vehicles, optionally filtered by rental status.
         /// </summary>
-        /// <returns>The available vehicles.</returns>
-        Task<IReadOnlyCollection<Vehicle>> GetAvailable();
+        /// <param name="isRented">True for rented, false for available, or null for all vehicles.</param>
+        /// <returns>The matching vehicles.</returns>
+        Task<IReadOnlyCollection<Vehicle>> GetByRentalStatus(bool? isRented);
 
         /// <summary>
         /// Persists the changes of an existing vehicle.

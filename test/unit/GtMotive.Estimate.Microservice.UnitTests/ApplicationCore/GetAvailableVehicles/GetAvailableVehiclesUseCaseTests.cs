@@ -23,7 +23,7 @@ namespace GtMotive.Estimate.Microservice.UnitTests.ApplicationCore.GetAvailableV
                 "Ibiza",
                 new ManufacturingDate(Today.AddYears(-1), Today));
             _vehicleRepository
-                .Setup(repository => repository.GetAvailable())
+                .Setup(repository => repository.GetByRentalStatus(null))
                 .ReturnsAsync([vehicle]);
             var useCase = new GetAvailableVehiclesUseCase(_vehicleRepository.Object);
 
@@ -35,14 +35,14 @@ namespace GtMotive.Estimate.Microservice.UnitTests.ApplicationCore.GetAvailableV
             Assert.Equal(vehicle.Brand, output.Brand);
             Assert.Equal(vehicle.Model, output.Model);
             Assert.Equal(vehicle.ManufacturingDate.Value, output.ManufacturingDate);
-            _vehicleRepository.Verify(repository => repository.GetAvailable(), Times.Once);
+            _vehicleRepository.Verify(repository => repository.GetByRentalStatus(null), Times.Once);
         }
 
         [Fact]
         public async Task ReturnsAnEmptyCollectionWhenNoVehiclesAreAvailable()
         {
             _vehicleRepository
-                .Setup(repository => repository.GetAvailable())
+                .Setup(repository => repository.GetByRentalStatus(null))
                 .ReturnsAsync([]);
             var useCase = new GetAvailableVehiclesUseCase(_vehicleRepository.Object);
 

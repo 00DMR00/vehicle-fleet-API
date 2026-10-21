@@ -41,7 +41,7 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Specs
             IReadOnlyCollection<AvailableVehicleResponse> vehicles = null;
             await _fixture.UsingHandlerForRequestResponse<GetAvailableVehiclesRequest, IWebApiPresenter>(async handler =>
             {
-                var presenter = await handler.Handle(new GetAvailableVehiclesRequest(), CancellationToken.None);
+                var presenter = await handler.Handle(new GetAvailableVehiclesRequest(isRented: false), CancellationToken.None);
                 var result = presenter.ActionResult.Should().BeAssignableTo<OkObjectResult>().Subject;
                 vehicles = result.Value.Should()
                     .BeAssignableTo<IReadOnlyCollection<AvailableVehicleResponse>>()
